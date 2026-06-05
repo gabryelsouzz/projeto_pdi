@@ -1,0 +1,75 @@
+# --- Python basics ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+*.egg
+MANIFEST
+
+# Logs
+*.log
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# MyPy / type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Django / Flask / others (optional, keep if you use them)
+db.sqlite3
+instance/
+.webassets-cache
+
+# Sphinx docs
+docs/_build/
+
+# PyBuilder
+target/
+
+# --- Jupyter / IPython ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+
+# --- IDEs ---
+
+# VS Code
+.vscode/
+
+# PyCharm / IntelliJ
+.idea/
+
+# Spyder / Rope (optional)
+.spyderproject
+.spyproject
+.ropeproject
