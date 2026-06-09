@@ -11,6 +11,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.python-version
 
 # Packaging / build
 build/
@@ -73,3 +74,4 @@ ipython_config.py
 .spyderproject
 .spyproject
 .ropeproject
+
