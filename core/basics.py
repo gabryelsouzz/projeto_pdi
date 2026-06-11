@@ -8,7 +8,7 @@ from matplotlib.axes import Axes
 from PIL.Image import Image as IMG
 
 
-def get_histogram(img: IMG) -> Figure:
+def get_histogram(img: IMG) -> tuple[Figure, list[int]]:
     
     fig: Figure = Figure(figsize=(10, 6))
     ax1: Axes = fig.add_subplot(2, 1, 1)
@@ -24,7 +24,7 @@ def get_histogram(img: IMG) -> Figure:
 
     fig.tight_layout()
 
-    return fig
+    return (fig, hist)
 
 
 def compute_pdf(vector_image: NDArray[uint8]) -> tuple[Figure, NDArray[float64]]:
