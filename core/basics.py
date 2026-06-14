@@ -47,10 +47,13 @@ def compute_pdf(vector_image: NDArray[uint8]) -> tuple[Figure, NDArray[float64]]
     return (fig, pdf_values)
 
 
-def compute_cdf(vector_image: NDArray[uint8]) -> tuple[Figure, NDArray[float64]]:
+def compute_cdf(vector_image: NDArray[uint8], plot: bool = True) -> tuple[Figure | None, NDArray[float64]]:
     
     pdf_values: NDArray[float64] = compute_pdf(vector_image)[1]
     cdf_values: NDArray[float64] = pdf_values.cumsum()
+
+    if not plot:
+        return (None, cdf_values)
 
     fig: Figure = Figure(figsize=(14, 8))
 
