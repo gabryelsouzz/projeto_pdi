@@ -25,7 +25,7 @@ def match(arr_orig: NDArray[uint8], img_ref: IMG) -> tuple[IMG, NDArray[uint8], 
     arr_matched: NDArray[uint8] = lut_match[arr_orig]
     img_matched: IMG = Image.fromarray(arr_matched, mode='L')
 
-    hist_matched: NDArray[np.uint8] = np.bincount(arr_matched.ravel(), minlength=256)
+    hist_matched: NDArray[np.uint8] = np.bincount(arr_matched.ravel(), minlength=256).astype(uint8)
 
     fig: Figure = Figure(figsize=(10, 5))
     ax = fig.add_subplot(1, 1, 1)

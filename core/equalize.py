@@ -16,7 +16,7 @@ def equalize(arr: NDArray[uint8]) -> tuple[IMG, NDArray[uint8], Figure]:
     arr_equalized: NDArray[uint8] = lut_equalized[arr]
     img_equalized: IMG = Image.fromarray(arr_equalized, mode='L')
 
-    hist_equalized: NDArray[uint8] = np.bincount(arr_equalized.ravel(), minlength=256)
+    hist_equalized: NDArray[uint8] = np.bincount(arr_equalized.ravel(), minlength=256).astype(uint8)
 
     fig: Figure = Figure(figsize=(10, 5))
     ax = fig.add_subplot(1, 1, 1)
