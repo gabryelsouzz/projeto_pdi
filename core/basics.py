@@ -1,55 +1,56 @@
 import numpy as np
 import matplotlib.gridspec as gridspec
+import matplotlib.pyplot as plt
 
 from numpy.typing import NDArray
 from numpy import uint8, float64, intp
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
-from PIL.Image import Image as IMG
 
 
-def get_histogram(img: IMG) -> tuple[Figure, list[int]]:
-    
+def get_histogram(arr: NDArray[np.uint8]) -> tuple[NDArray[np.int64], Figure]:
+
     fig: Figure = Figure(figsize=(10, 6))
     ax1: Axes = fig.add_subplot(2, 1, 1)
     ax2: Axes = fig.add_subplot(2, 1, 2)
 
-    hist: list[int] = img.histogram()             # retorna valores discretos, por isso usa gráfico de barras
-    ax1.set_title('Histograma usando PILLOW')
-    ax1.bar(x=range(256), height=hist)
+    hist_data: NDArray[np.int64] = np.bincount(arr.ravel(), minlength=256)
 
-    arr: NDArray[uint8] = np.array(img, np.uint8) # retorna valores continuos, por isso usa histograma
-    ax2.set_title('Histograma usando Numpy')
-    ax2.hist(x=arr.ravel(), bins=256, range=(0,256))
+    ax1.set_title("Histograma discreto")
+    ax1.bar(range(256), hist_data)
+
+    ax2.set_title("Histograma com plt.hist")
+    ax2.hist(arr.ravel(), bins=256, range=(0, 256))
 
     fig.tight_layout()
+    return hist_data, fig
 
-    return (fig, hist)
 
-
-def compute_pdf(vector_image: NDArray[uint8]) -> tuple[Figure, NDArray[float64]]:
+def compute_pdf(vector_image: NDArray[uint8]) -> tuple[NDArray[float64], Figure]:
 
     vector_image = vector_image.astype(uint8)
 
-    pixels_appears: NDArray[intp]    = np.bincount(vector_image.ravel(), minlength=256) # conta o valor abs de aparição de cada valor
-    pdf_values:     NDArray[float64] = pixels_appears/vector_image.size
+    pixels_appears: NDArray[intp]    = np.bincount(vector_image.ravel(), minlength=256)
+    pdf_float:      NDArray[float64] = pixels_appears / vector_image.size
 
-    fig: Figure = Figure(figsize=(10, 4))
-    ax1: Axes   = fig.add_subplot(1, 1, 1)
-    
-    ax1.bar(np.arange(256), pdf_values, width=1)
+    fig, ax1 = plt.subplots(1, 1, figsize=(10, 4))  # ← back to plt
+    plt.close(fig)                                    # ← prevents auto-display
+
+    ax1.bar(np.arange(256), pdf_float, width=1.0, color='steelblue')
     ax1.set_xlim(-1, 256)
-    ax1.set_ylim(0, pdf_values.max()*1.1)
-    ax1.set_title('Probabilidade de Aparição de Cada Itensidade de Pixel')
-    ax1.set_xlabel('Nível de Cinza (intensidade)')
-    ax1.set_ylabel('Probabilidade de Aparição')
+    ax1.set_ylim(0, pdf_float.max() * 1.1)
+    ax1.set_title('Probabilidade de Aparição de Cada Intensidade de Pixel')
+    ax1.set_xlabel('Nível de Cinza rk (intensidade)')
+    ax1.set_ylabel('Probabilidade pr(rk)')
+    fig.tight_layout()
 
-    return (fig, pdf_values)
+    return pdf_float, fig
+
 
 
 def compute_cdf(vector_image: NDArray[uint8], plot: bool = True) -> tuple[Figure | None, NDArray[float64]]:
     
-    pdf_values: NDArray[float64] = compute_pdf(vector_image)[1]
+    pdf_values: NDArray[float64] = compute_pdf(vector_image)[0]
     cdf_values: NDArray[float64] = pdf_values.cumsum()
 
     if not plot:
