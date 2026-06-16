@@ -17,7 +17,7 @@ def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[
     pdf:    NDArray[float64]
 
     result = np.where(vector_image >= T, 255, 0).astype(uint8)
-    _, pdf = compute_pdf(result)
+    pdf, _ = compute_pdf(result)
 
     fig: Figure
     ax:  Axes

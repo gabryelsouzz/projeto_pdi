@@ -17,7 +17,7 @@ def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) 
     pdf:    NDArray[float64]
 
     result  = np.clip(c * vector_image.astype(np.float64) + b, 0, 255).astype(uint8)
-    _, pdf  = compute_pdf(vector_image)
+    pdf, _ = compute_pdf(vector_image)  # ← inverter a ordem
 
     fig: Figure
     ax:  Axes
