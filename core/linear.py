@@ -17,7 +17,8 @@ def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) 
     pdf:    NDArray[float64]
 
     result  = np.clip(c * vector_image.astype(np.float64) + b, 0, 255).astype(uint8)
-    pdf, _ = compute_pdf(vector_image)  # ← inverter a ordem
+    pdf, _ = compute_pdf(result)
+    hist: NDArray[uint8] = np.bincount(result.ravel(), minlength=256).astype(uint8)
 
     fig: Figure
     ax:  Axes
@@ -34,7 +35,7 @@ def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) 
 
     pil_image: IMG = Image.fromarray(result, mode='L')
 
-    return (pil_image, result, fig)
+    return pil_image, hist, fig
 
 
 def autoscale(vector_image: NDArray[uint8]) -> tuple[IMG, NDArray[uint8], Figure]:

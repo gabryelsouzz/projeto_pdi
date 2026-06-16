@@ -9,7 +9,7 @@ from matplotlib.axes import Axes
 from PIL.Image import Image as IMG
 
 
-def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[float64], Figure]:
+def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[uint8], Figure]:
 
     from core.basics import compute_pdf
 
@@ -18,6 +18,7 @@ def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[
 
     result = np.where(vector_image >= T, 255, 0).astype(uint8)
     pdf, _ = compute_pdf(result)
+    hist: NDArray[uint8] = np.bincount(result.ravel(), minlength=256).astype(uint8)
 
     fig: Figure
     ax:  Axes
@@ -36,4 +37,4 @@ def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[
 
     pil_image: IMG = Image.fromarray(result, mode='L')
 
-    return (pil_image, pdf, fig)
+    return pil_image, hist, fig
