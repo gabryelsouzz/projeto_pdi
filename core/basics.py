@@ -26,31 +26,20 @@ def get_histogram(arr: NDArray[np.uint8]) -> tuple[NDArray[np.int64], Figure]:
     return hist_data, fig
 
 
-def compute_pdf(vector_image: NDArray[uint8]) -> tuple[NDArray[float64], Figure]:
+def compute_pdf(vector_image: NDArray[uint8]) -> NDArray[float64]:
 
     vector_image = vector_image.astype(uint8)
 
     pixels_appears: NDArray[intp]    = np.bincount(vector_image.ravel(), minlength=256)
     pdf_float:      NDArray[float64] = pixels_appears / vector_image.size
 
-    fig, ax1 = plt.subplots(1, 1, figsize=(10, 4))  # ← back to plt
-    plt.close(fig)                                    # ← prevents auto-display
-
-    ax1.bar(np.arange(256), pdf_float, width=1.0, color='steelblue')
-    ax1.set_xlim(-1, 256)
-    ax1.set_ylim(0, pdf_float.max() * 1.1)
-    ax1.set_title('Probabilidade de Aparição de Cada Intensidade de Pixel')
-    ax1.set_xlabel('Nível de Cinza rk (intensidade)')
-    ax1.set_ylabel('Probabilidade pr(rk)')
-    fig.tight_layout()
-
-    return pdf_float, fig
+    return pdf_float
 
 
 
 def compute_cdf(vector_image: NDArray[uint8], plot: bool = True) -> tuple[Figure | None, NDArray[float64]]:
     
-    pdf_values: NDArray[float64] = compute_pdf(vector_image)[0]
+    pdf_values: NDArray[float64] = compute_pdf(vector_image)
     cdf_values: NDArray[float64] = pdf_values.cumsum()
 
     if not plot:

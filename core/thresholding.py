@@ -8,8 +8,9 @@ from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from PIL.Image import Image as IMG
 
+from core.types import ProcessingResult
 
-def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[float64], Figure]:
+def threshold(vector_image: NDArray[uint8], T: int = 128) -> ProcessingResult:
 
     from core.basics import compute_pdf
 
@@ -17,7 +18,8 @@ def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[
     pdf:    NDArray[float64]
 
     result = np.where(vector_image >= T, 255, 0).astype(uint8)
-    pdf, _ = compute_pdf(result)
+    pdf = compute_pdf(result)
+    hist: NDArray[uint8] = np.bincount(result.ravel(), minlength=256).astype(uint8)
 
     fig: Figure
     ax:  Axes
@@ -36,4 +38,4 @@ def threshold(vector_image: NDArray[uint8], T: int = 128) -> tuple[IMG, NDArray[
 
     pil_image: IMG = Image.fromarray(result, mode='L')
 
-    return (pil_image, pdf, fig)
+    return ProcessingResult(process_name="Thresholding" ,image=pil_image, histogram=hist, figure=fig)
