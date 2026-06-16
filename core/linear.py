@@ -8,8 +8,10 @@ from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from PIL.Image import Image as IMG
 
+from core.types import ProcessingResult
 
-def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) -> tuple[IMG, NDArray[uint8], Figure]:
+
+def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) -> ProcessingResult:
 
     from core.basics import compute_pdf
     
@@ -17,7 +19,7 @@ def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) 
     pdf:    NDArray[float64]
 
     result  = np.clip(c * vector_image.astype(np.float64) + b, 0, 255).astype(uint8)
-    pdf, _ = compute_pdf(result)
+    pdf = compute_pdf(result)
     hist: NDArray[uint8] = np.bincount(result.ravel(), minlength=256).astype(uint8)
 
     fig: Figure
@@ -35,10 +37,10 @@ def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) 
 
     pil_image: IMG = Image.fromarray(result, mode='L')
 
-    return pil_image, hist, fig
+    return ProcessingResult(process_name="Linear Transformation" ,image=pil_image, histogram=hist, figure=fig)
 
 
-def autoscale(vector_image: NDArray[uint8]) -> tuple[IMG, NDArray[uint8], Figure]:
+def autoscale(vector_image: NDArray[uint8]) -> ProcessingResult:
     r_min: float64 = float64(vector_image.min())
     r_max: float64 = float64(vector_image.max())
 

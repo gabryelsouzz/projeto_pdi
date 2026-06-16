@@ -6,7 +6,10 @@ from numpy.typing import NDArray
 from numpy import uint8
 from matplotlib.figure import Figure
 
-def match(arr_orig: NDArray[uint8], img_ref: IMG) -> tuple[IMG, NDArray[uint8], Figure]:
+from core.types import ProcessingResult
+
+
+def match(arr_orig: NDArray[uint8], img_ref: IMG) -> ProcessingResult:
 
     from core.basics import compute_cdf
 
@@ -32,4 +35,4 @@ def match(arr_orig: NDArray[uint8], img_ref: IMG) -> tuple[IMG, NDArray[uint8], 
     ax.imshow(arr_matched, cmap='gray', vmin=0, vmax=255)
     ax.axis('off')
 
-    return img_matched, hist_matched, fig
+    return ProcessingResult(process_name="Match" ,image=img_matched, histogram=hist_matched, figure=fig)

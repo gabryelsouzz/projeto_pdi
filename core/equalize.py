@@ -6,7 +6,10 @@ from numpy.typing import NDArray
 from numpy import uint8
 from matplotlib.figure import Figure
 
-def equalize(arr: NDArray[uint8]) -> tuple[IMG, NDArray[uint8], Figure]:
+from core.types import ProcessingResult
+
+
+def equalize(arr: NDArray[uint8]) -> ProcessingResult:
 
     from core.basics import compute_cdf
 
@@ -27,4 +30,4 @@ def equalize(arr: NDArray[uint8]) -> tuple[IMG, NDArray[uint8], Figure]:
     ax.set_ylabel('Contagem')
     fig.tight_layout()
 
-    return img_equalized, hist_equalized, fig
+    return ProcessingResult(process_name="Equalize" ,image=img_equalized, histogram=hist_equalized, figure=fig)
