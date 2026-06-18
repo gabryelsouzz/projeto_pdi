@@ -1,0 +1,35 @@
+import customtkinter as ctk
+
+from ui.components.labeled_frame import LabeledFrame
+
+
+class CentralArea(ctk.CTkFrame):
+
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        # Rows 0 and 2 are the frames (expand); row 1 is the divider (fixed).
+        self.grid_columnconfigure((0, 1), weight=1, uniform="frames")
+        self.grid_rowconfigure((0, 2), weight=1, uniform="frames")
+        self.grid_rowconfigure(1, weight=0)
+
+        original_image_frame = LabeledFrame(self, title="Imagem Original")
+        original_image_frame.grid(row=0, column=0, sticky="nsew", padx=4, pady=4)
+
+        original_hist_frame = LabeledFrame(self, title="Histograma Original")
+        original_hist_frame.grid(row=0, column=1, sticky="nsew", padx=4, pady=4)
+
+        # Horizontal divider between the original row and the result row.
+        self.divider: ctk.CTkFrame = ctk.CTkFrame(self, height=2, fg_color="gray50")
+        self.divider.grid(row=1, column=0, columnspan=2, sticky="ew", padx=4)
+
+        result_image_frame = LabeledFrame(self, title="Imagem Resultante")
+        result_image_frame.grid(row=2, column=0, sticky="nsew", padx=4, pady=4)
+
+        result_hist_frame = LabeledFrame(self, title="Histograma Resultante")
+        result_hist_frame.grid(row=2, column=1, sticky="nsew", padx=4, pady=4)
+
+        self.original_image: ctk.CTkFrame = original_image_frame.content
+        self.original_hist: ctk.CTkFrame = original_hist_frame.content
+        self.result_image: ctk.CTkFrame = result_image_frame.content
+        self.result_hist: ctk.CTkFrame = result_hist_frame.content
