@@ -46,6 +46,11 @@ class LeftPanel(ctk.CTkFrame):
         self.current_panel: ParamPanel | None = None
         self._on_transform_change(names[0])  # instantiate the initial panel
 
+        self.grid_rowconfigure(3, weight=1)
+
+        self.btn_apply: ctk.CTkButton = ctk.CTkButton(self, text="Aplicar")
+        self.btn_apply.grid(row=4, column=0, sticky="ew", padx=12, pady=12)
+
     def _on_transform_change(self, name: str) -> None:
         if self.current_panel is not None:
             self.current_panel.destroy()

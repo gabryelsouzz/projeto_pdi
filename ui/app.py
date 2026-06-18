@@ -4,6 +4,7 @@ import customtkinter as ctk
 import numpy as np
 
 from core.utils import load
+from ui.registry import REGISTRY
 from ui.state import AppState
 from ui.render import render_image
 from ui.mocks import render_histogram, clear_frame
@@ -48,6 +49,7 @@ class App(ctk.CTk):
 
         self.bottom_bar.btn_load.configure(command=self._on_load)
         self.bottom_bar.btn_reset.configure(command=self._on_reset)
+        self.left_panel.btn_apply.configure(command=self._on_apply)
         self.central_area.btn_use_result.configure(command=self._on_use_result)
 
         self.update_screens()
@@ -89,6 +91,16 @@ class App(ctk.CTk):
         _img, arr = load(path)
         self.state_data.original_image = arr
         self.state_data.result_image = None
+        self.update_screens()
+
+    def _on_apply(self) -> None:
+        s = self.state_data
+        if s.original_image is None:
+            return
+        func, _ = REGISTRY[s.selected_transform]
+        params = self.left_panel.current_panel.get_params()
+        result = func(s.original_image, **params)
+        s.result_image = np.asarray(result.image, dtype=np.uint8)
         self.update_screens()
 
     def _on_transform_change(self, name: str) -> None:
