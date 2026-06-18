@@ -1,8 +1,12 @@
+from tkinter import filedialog
+
 import customtkinter as ctk
 import numpy as np
 
+from core.utils import load
 from ui.state import AppState
-from ui.mocks import render_image, render_histogram, clear_frame
+from ui.render import render_image
+from ui.mocks import render_histogram, clear_frame
 from ui.components.left_panel import LeftPanel
 from ui.components.central_area import CentralArea
 from ui.components.bottom_bar import BottomBar
@@ -40,8 +44,9 @@ class App(ctk.CTk):
             row=1, column=0, columnspan=2, sticky="ew", padx=8, pady=(0, 8)
         )
 
+        self.bottom_bar.btn_load.configure(command=self._on_load)
         self.bottom_bar.btn_reset.configure(command=self._on_reset)
-        self.left_panel.btn_use_result.configure(command=self._on_use_result)
+        self.central_area.btn_use_result.configure(command=self._on_use_result)
 
         self.update_screens()
 
@@ -68,6 +73,21 @@ class App(ctk.CTk):
         else:
             clear_frame(ca.result_image)
             clear_frame(ca.result_hist)
+
+    def _on_load(self) -> None:
+        path = filedialog.askopenfilename(
+            title="Carregar imagem",
+            filetypes=[
+                ("Imagens", "*.png *.jpg *.jpeg *.bmp *.gif *.tiff"),
+                ("Todos", "*.*"),
+            ],
+        )
+        if not path:
+            return
+        _img, arr = load(path)
+        self.state_data.original_image = arr
+        self.state_data.result_image = None
+        self.update_screens()
 
     def _on_reset(self) -> None:
         self.state_data.result_image = None

@@ -8,10 +8,12 @@ class CentralArea(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        # Rows 0 and 2 are the frames (expand); row 1 is the divider (fixed).
+        # Rows 0 and 2 are the frames (expand); row 1 is the divider (fixed);
+        # row 3 holds the "use result as input" button (fixed).
         self.grid_columnconfigure((0, 1), weight=1, uniform="frames")
         self.grid_rowconfigure((0, 2), weight=1, uniform="frames")
         self.grid_rowconfigure(1, weight=0)
+        self.grid_rowconfigure(3, weight=0)
 
         original_image_frame = LabeledFrame(self, title="Imagem Original")
         original_image_frame.grid(row=0, column=0, sticky="nsew", padx=4, pady=4)
@@ -28,6 +30,11 @@ class CentralArea(ctk.CTkFrame):
 
         result_hist_frame = LabeledFrame(self, title="Histograma Resultante")
         result_hist_frame.grid(row=2, column=1, sticky="nsew", padx=4, pady=4)
+
+        self.btn_use_result: ctk.CTkButton = ctk.CTkButton(
+            self, text="Usar resultado como entrada"
+        )
+        self.btn_use_result.grid(row=3, column=0, sticky="ew", padx=4, pady=(0, 4))
 
         self.original_image: ctk.CTkFrame = original_image_frame.content
         self.original_hist: ctk.CTkFrame = original_hist_frame.content

@@ -8,13 +8,10 @@ class BottomBar(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, height=BOTTOM_BAR_HEIGHT, **kwargs)
 
-        self.grid_propagate(False)
-        self.grid_columnconfigure(0, weight=1)
+        self.pack_propagate(False)
 
-        self.status: ctk.CTkLabel = ctk.CTkLabel(
-            self, text="Controles inferiores", anchor="w"
-        )
-        self.status.grid(row=0, column=0, sticky="ew", padx=12)
+        self.btn_load: ctk.CTkButton = ctk.CTkButton(self, text="Carregar", width=100)
+        self.btn_load.pack(side="left", padx=(12, 4), pady=2)
 
         self.btn_reset: ctk.CTkButton = ctk.CTkButton(self, text="Resetar", width=100)
-        self.btn_reset.grid(row=0, column=1, sticky="e", padx=12, pady=2)
+        self.btn_reset.pack(side="left", pady=2)
