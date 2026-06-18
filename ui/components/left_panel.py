@@ -16,3 +16,8 @@ class LeftPanel(ctk.CTkFrame):
             self, text="Controles", anchor="w", font=ctk.CTkFont(size=16, weight="bold")
         )
         self.header.grid(row=0, column=0, sticky="ew", padx=12, pady=12)
+
+        self.btn_use_result: ctk.CTkButton = ctk.CTkButton(
+            self, text="Usar resultado como entrada"
+        )
+        self.btn_use_result.grid(row=1, column=0, sticky="ew", padx=12, pady=(0, 8))

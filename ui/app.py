@@ -1,6 +1,8 @@
 import customtkinter as ctk
+import numpy as np
 
 from ui.state import AppState
+from ui.mocks import render_image, render_histogram, clear_frame
 from ui.components.left_panel import LeftPanel
 from ui.components.central_area import CentralArea
 from ui.components.bottom_bar import BottomBar
@@ -37,3 +39,44 @@ class App(ctk.CTk):
         self.bottom_bar.grid(
             row=1, column=0, columnspan=2, sticky="ew", padx=8, pady=(0, 8)
         )
+
+        self.bottom_bar.btn_reset.configure(command=self._on_reset)
+        self.left_panel.btn_use_result.configure(command=self._on_use_result)
+
+        self.update_screens()
+
+    def update_screens(self) -> None:
+        s = self.state_data
+        ca = self.central_area
+
+        if s.original_image is not None:
+            render_image(ca.original_image, s.original_image)
+            render_histogram(
+                ca.original_hist,
+                np.bincount(s.original_image.ravel(), minlength=256),
+            )
+        else:
+            clear_frame(ca.original_image)
+            clear_frame(ca.original_hist)
+
+        if s.result_image is not None:
+            render_image(ca.result_image, s.result_image)
+            render_histogram(
+                ca.result_hist,
+                np.bincount(s.result_image.ravel(), minlength=256),
+            )
+        else:
+            clear_frame(ca.result_image)
+            clear_frame(ca.result_hist)
+
+    def _on_reset(self) -> None:
+        self.state_data.result_image = None
+        self.update_screens()
+
+    def _on_use_result(self) -> None:
+        s = self.state_data
+        if s.result_image is None:
+            return
+        s.original_image = s.result_image.copy()
+        s.result_image = None
+        self.update_screens()

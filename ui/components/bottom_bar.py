@@ -15,3 +15,6 @@ class BottomBar(ctk.CTkFrame):
             self, text="Controles inferiores", anchor="w"
         )
         self.status.grid(row=0, column=0, sticky="ew", padx=12)
+
+        self.btn_reset: ctk.CTkButton = ctk.CTkButton(self, text="Resetar", width=100)
+        self.btn_reset.grid(row=0, column=1, sticky="e", padx=12, pady=2)
