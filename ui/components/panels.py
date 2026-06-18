@@ -166,3 +166,17 @@ class MatchPanel(ParamPanel):
         if self.imagem_referencia is None:
             raise ValueError("Selecione uma imagem de referência!")
         return {"img_ref": self.imagem_referencia}
+    
+class EmptyPanel(ParamPanel):
+    def __init__(self, master, transform_name: str = "", **kwargs):
+        super().__init__(master, **kwargs)
+        
+        label = ctk.CTkLabel(
+            self,
+            text="✨ Nenhum parâmetro necessário",
+            font=("Arial", 14, "italic")
+        )
+        label.pack(pady=30, padx=20)
+    
+    def get_params(self) -> dict:
+        return {}  
