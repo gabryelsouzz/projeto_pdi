@@ -15,3 +15,10 @@ class BottomBar(ctk.CTkFrame):
 
         self.btn_reset: ctk.CTkButton = ctk.CTkButton(self, text="Resetar", width=100)
         self.btn_reset.pack(side="left", pady=2)
+
+        self.btn_save: ctk.CTkButton = ctk.CTkButton(
+            self, 
+            text="Salvar", 
+            width=120,
+        )
+        self.btn_save.pack(side="right", padx=12, pady=2)
