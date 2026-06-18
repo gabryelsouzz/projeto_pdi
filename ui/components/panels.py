@@ -101,3 +101,68 @@ class LinearPanel(ParamPanel):
     
     def get_params(self) -> dict:
         return {"c": self.valor_c.get(), "b": self.valor_b.get()}
+    
+class MatchPanel(ParamPanel):
+    def __init__(self, master, transform_name: str = "", **kwargs):
+        super().__init__(master, **kwargs)
+        
+        from tkinter import filedialog
+        from PIL import Image
+        import numpy as np
+        
+        self.caminho_referencia = None
+        self.imagem_referencia = None
+        
+        frame = ctk.CTkFrame(self, fg_color="transparent")
+        frame.pack(fill="x", padx=15, pady=15)
+        
+        label = ctk.CTkLabel(
+            frame,
+            text="📸 Imagem de Referência:",
+            font=("Arial", 13)
+        )
+        label.pack(pady=(5, 5))
+        
+        self.label_arquivo = ctk.CTkLabel(
+            frame,
+            text="Nenhum arquivo selecionado",
+            font=("Arial", 12, "italic")
+        )
+        self.label_arquivo.pack(pady=5)
+        
+        btn_selecionar = ctk.CTkButton(
+            frame,
+            text="📁 Selecionar imagem",
+            command=self._selecionar_arquivo,
+            width=180
+        )
+        btn_selecionar.pack(pady=10)
+    
+    def _selecionar_arquivo(self):
+        from tkinter import filedialog
+        from PIL import Image
+        import numpy as np
+        
+        arquivo = filedialog.askopenfilename(
+            title="Selecione a imagem de referência",
+            filetypes=[("Imagens", "*.png *.jpg *.jpeg *.bmp")]
+        )
+        
+        if arquivo:
+            try:
+                img = Image.open(arquivo).convert('L')
+                self.imagem_referencia = np.array(img)
+                self.caminho_referencia = arquivo
+                
+                nome = arquivo.split("/")[-1]
+                self.label_arquivo.configure(text=f"✅ {nome}", text_color="green")
+                print(f"📸 Referência carregada: {nome}")
+                
+            except Exception as e:
+                self.label_arquivo.configure(text=f"❌ Erro: {e}", text_color="red")
+                self.imagem_referencia = None
+    
+    def get_params(self) -> dict:
+        if self.imagem_referencia is None:
+            raise ValueError("Selecione uma imagem de referência!")
+        return {"img_ref": self.imagem_referencia}
