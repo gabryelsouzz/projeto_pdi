@@ -33,7 +33,9 @@ class App(ctk.CTk):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        self.left_panel: LeftPanel = LeftPanel(self)
+        self.left_panel: LeftPanel = LeftPanel(
+            self, on_transform_change=self._on_transform_change
+        )
         self.left_panel.grid(row=0, column=0, sticky="ns", padx=(8, 4), pady=8)
 
         self.central_area: CentralArea = CentralArea(self)
@@ -88,6 +90,9 @@ class App(ctk.CTk):
         self.state_data.original_image = arr
         self.state_data.result_image = None
         self.update_screens()
+
+    def _on_transform_change(self, name: str) -> None:
+        self.state_data.selected_transform = name
 
     def _on_reset(self) -> None:
         self.state_data.result_image = None
