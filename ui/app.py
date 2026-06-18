@@ -97,7 +97,10 @@ class App(ctk.CTk):
         s = self.state_data
         if s.original_image is None:
             return
-        func, _ = REGISTRY[s.selected_transform]
+        func, _ = REGISTRY.get(s.selected_transform, (None, None))
+        if func is None:
+            print(f"Transformação '{s.selected_transform}' não encontrada!")
+            return
         params = self.left_panel.current_panel.get_params()
         result = func(s.original_image, **params)
         s.result_image = np.asarray(result.image, dtype=np.uint8)
