@@ -7,6 +7,7 @@ from core.utils import load
 from ui.registry import REGISTRY
 from ui.state import AppState
 from ui.render import render_image, render_histogram
+from ui.icons import load_icon
 from ui.mocks import clear_frame
 from ui.components.left_panel import LeftPanel
 from ui.components.central_area import CentralArea
@@ -73,20 +74,7 @@ class App(ctk.CTk):
 
             self.left_panel.btn_apply.configure(state="disabled", fg_color="#525252")
 
-            img_orig_icon = PILImage.open("ui/assets/upload.png").convert("RGBA")
-            r, g, b, a = img_orig_icon.split()
-            img_orig_icon = PILImage.merge(
-                "RGBA",
-                (
-                    r.point(lambda _: 140),
-                    g.point(lambda _: 140),
-                    b.point(lambda _: 140),
-                    a,
-                ),
-            )
-            icon_img_orig = ctk.CTkImage(
-                light_image=img_orig_icon, dark_image=img_orig_icon, size=(28, 28)
-            )
+            icon_img_orig = load_icon("ui/assets/upload.png")
 
             placeholder_img_orig = ctk.CTkLabel(
                 ca.original_image,
@@ -100,21 +88,7 @@ class App(ctk.CTk):
             placeholder_img_orig.image = icon_img_orig
             placeholder_img_orig.pack(expand=True)
 
-            hist_orig_icon = PILImage.open("ui/assets/chart-column.png").convert("RGBA")
-            r, g, b, a = hist_orig_icon.split()
-            hist_orig_icon = PILImage.merge(
-                "RGBA",
-                (
-                    r.point(lambda _: 140),
-                    g.point(lambda _: 140),
-                    b.point(lambda _: 140),
-                    a,
-                ),
-            )
-
-            icon_hist_orig = ctk.CTkImage(
-                light_image=hist_orig_icon, dark_image=hist_orig_icon, size=(28, 28)
-            )
+            icon_hist_orig = load_icon("ui/assets/chart-column.png")
 
             placeholder_hist_orig = ctk.CTkLabel(
                 ca.original_hist,
@@ -145,21 +119,7 @@ class App(ctk.CTk):
                 state="disabled", fg_color="#525252"
             )
 
-            img_res_icon = PILImage.open("ui/assets/image.png").convert("RGBA")
-            r, g, b, a = img_res_icon.split()
-            img_res_icon = PILImage.merge(
-                "RGBA",
-                (
-                    r.point(lambda _: 140),
-                    g.point(lambda _: 140),
-                    b.point(lambda _: 140),
-                    a,
-                ),
-            )
-
-            icon_img_res = ctk.CTkImage(
-                light_image=img_res_icon, dark_image=img_res_icon, size=(28, 28)
-            )
+            icon_img_res = load_icon("ui/assets/image.png")
 
             placeholder_img_res = ctk.CTkLabel(
                 ca.result_image,
@@ -173,21 +133,7 @@ class App(ctk.CTk):
             placeholder_img_res.image = icon_img_res
             placeholder_img_res.pack(expand=True)
 
-            hist_res_icon = PILImage.open("ui/assets/chart-column.png").convert("RGBA")
-            r, g, b, a = hist_res_icon.split()
-            hist_res_icon = PILImage.merge(
-                "RGBA",
-                (
-                    r.point(lambda _: 140),
-                    g.point(lambda _: 140),
-                    b.point(lambda _: 140),
-                    a,
-                ),
-            )
-
-            icon_hist_res = ctk.CTkImage(
-                light_image=hist_res_icon, dark_image=hist_res_icon, size=(28, 28)
-            )
+            icon_hist_res = load_icon("ui/assets/chart-column.png")
 
             placeholder_hist_res = ctk.CTkLabel(
                 ca.result_hist,
