@@ -1,4 +1,4 @@
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
 import numpy as np
@@ -6,12 +6,12 @@ import numpy as np
 from core.utils import load
 from ui.registry import REGISTRY
 from ui.state import AppState
-from ui.render import render_image
-from ui.mocks import render_histogram, clear_frame
+from ui.render import render_image, render_histogram
+from ui.mocks import clear_frame
 from ui.components.left_panel import LeftPanel
 from ui.components.central_area import CentralArea
 from ui.components.bottom_bar import BottomBar
-
+from PIL import Image as PILImage
 
 class App(ctk.CTk):
 
@@ -49,6 +49,7 @@ class App(ctk.CTk):
 
         self.bottom_bar.btn_load.configure(command=self._on_load)
         self.bottom_bar.btn_reset.configure(command=self._on_reset)
+        self.bottom_bar.btn_save.configure(command=self._on_save)
         self.left_panel.btn_apply.configure(command=self._on_apply)
         self.central_area.btn_use_result.configure(command=self._on_use_result)
 
@@ -60,23 +61,103 @@ class App(ctk.CTk):
 
         if s.original_image is not None:
             render_image(ca.original_image, s.original_image)
+
             render_histogram(
                 ca.original_hist,
-                np.bincount(s.original_image.ravel(), minlength=256),
+                s.original_image
             )
+
+            self.left_panel.btn_apply.configure(state="normal", fg_color="#1f538d")
+            
         else:
             clear_frame(ca.original_image)
             clear_frame(ca.original_hist)
 
+            self.left_panel.btn_apply.configure(state="disabled", fg_color="#525252")
+
+            img_orig_icon = PILImage.open("ui/assets/upload.png").convert("RGBA")
+            r, g, b, a = img_orig_icon.split()
+            img_orig_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
+            icon_img_orig = ctk.CTkImage(light_image=img_orig_icon, dark_image=img_orig_icon, size=(28, 28))
+
+            placeholder_img_orig = ctk.CTkLabel(
+                ca.original_image, 
+                image=icon_img_orig,
+                text="\nClique em 'Carregar' para selecionar a imagem", 
+                compound="top",
+                font=("Arial", 13, "italic"),
+                text_color="gray"
+            )
+
+            placeholder_img_orig.image = icon_img_orig
+            placeholder_img_orig.pack(expand=True)
+
+            hist_orig_icon = PILImage.open("ui/assets/chart-column.png").convert("RGBA")
+            r, g, b, a = hist_orig_icon.split()
+            hist_orig_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
+            
+            icon_hist_orig = ctk.CTkImage(light_image=hist_orig_icon, dark_image=hist_orig_icon, size=(28, 28))
+
+            placeholder_hist_orig = ctk.CTkLabel(
+                ca.original_hist, 
+                image=icon_hist_orig,
+                text="\nHistograma indisponível", 
+                compound="top",
+                font=("Arial", 13, "italic"),
+                text_color="gray"
+            )
+
+            placeholder_hist_orig.image = icon_hist_orig
+            placeholder_hist_orig.pack(expand=True)
+
         if s.result_image is not None:
             render_image(ca.result_image, s.result_image)
-            render_histogram(
-                ca.result_hist,
-                np.bincount(s.result_image.ravel(), minlength=256),
-            )
+            render_histogram(ca.result_hist, s.result_image)
+
+            self.bottom_bar.btn_save.configure(state="normal", fg_color="#1f538d")
+            self.central_area.btn_use_result.configure(state="normal", fg_color="#1f538d")
         else:
             clear_frame(ca.result_image)
             clear_frame(ca.result_hist)
+
+            self.bottom_bar.btn_save.configure(state="disabled", fg_color="#525252")
+            self.central_area.btn_use_result.configure(state="disabled", fg_color="#525252")
+
+            img_res_icon = PILImage.open("ui/assets/image.png").convert("RGBA")
+            r, g, b, a = img_res_icon.split()
+            img_res_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
+            
+            icon_img_res = ctk.CTkImage(light_image=img_res_icon, dark_image=img_res_icon, size=(28, 28))
+
+            placeholder_img_res = ctk.CTkLabel(
+                ca.result_image, 
+                image=icon_img_res,
+                text="\nO resultado aparecerá aqui", 
+                compound="top",
+                font=("Arial", 13, "italic"),
+                text_color="gray"
+            )
+
+            placeholder_img_res.image = icon_img_res
+            placeholder_img_res.pack(expand=True)
+
+            hist_res_icon = PILImage.open("ui/assets/chart-column.png").convert("RGBA")
+            r, g, b, a = hist_res_icon.split()
+            hist_res_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
+            
+            icon_hist_res = ctk.CTkImage(light_image=hist_res_icon, dark_image=hist_res_icon, size=(28, 28))
+
+            placeholder_hist_res = ctk.CTkLabel(
+                ca.result_hist, 
+                image=icon_hist_res,
+                text="\nHistograma indisponível", 
+                compound="top",
+                font=("Arial", 13, "italic"),
+                text_color="gray"
+            )
+
+            placeholder_hist_res.image = icon_hist_res
+            placeholder_hist_res.pack(expand=True)
 
     def _on_load(self) -> None:
         path = filedialog.askopenfilename(
@@ -88,10 +169,12 @@ class App(ctk.CTk):
         )
         if not path:
             return
+        
         _img, arr = load(path)
         self.state_data.original_image = arr
         self.state_data.result_image = None
         self.update_screens()
+        
 
     def _on_apply(self) -> None:
         s = self.state_data
@@ -117,3 +200,30 @@ class App(ctk.CTk):
         s.original_image = s.result_image.copy()
         s.result_image = None
         self.update_screens()
+
+    def _on_save(self) -> None:
+        s = self.state_data
+
+        path = filedialog.asksaveasfilename(
+            title="Salvar imagem",
+            defaultextension=".png",
+            filetypes=[
+                ("Imagem PNG", "*.png"),
+                ("Imagem JPEG", "*.jpg;*.jpeg"),
+                ("Imagem BMP", "*.bmp"),
+                ("Todos os arquivos", "*.*"),
+            ],
+        )
+
+        if not path:
+            return
+
+        try:
+            img_to_save = PILImage.fromarray(s.result_image, mode="L")
+            
+            img_to_save.save(path)
+            
+            messagebox.showinfo(title="Sucesso", message="Imagem salva com sucesso!")
+            
+        except Exception as e:
+            messagebox.showerror(title="Erro", message=f"Não foi possível salvar a imagem:\n{str(e)}")
