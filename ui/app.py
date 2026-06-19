@@ -13,6 +13,7 @@ from ui.components.central_area import CentralArea
 from ui.components.bottom_bar import BottomBar
 from PIL import Image as PILImage
 
+
 class App(ctk.CTk):
 
     def __init__(self, state: AppState):
@@ -62,13 +63,10 @@ class App(ctk.CTk):
         if s.original_image is not None:
             render_image(ca.original_image, s.original_image)
 
-            render_histogram(
-                ca.original_hist,
-                s.original_image
-            )
+            render_histogram(ca.original_hist, s.original_image)
 
             self.left_panel.btn_apply.configure(state="normal", fg_color="#1f538d")
-            
+
         else:
             clear_frame(ca.original_image)
             clear_frame(ca.original_hist)
@@ -77,16 +75,26 @@ class App(ctk.CTk):
 
             img_orig_icon = PILImage.open("ui/assets/upload.png").convert("RGBA")
             r, g, b, a = img_orig_icon.split()
-            img_orig_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
-            icon_img_orig = ctk.CTkImage(light_image=img_orig_icon, dark_image=img_orig_icon, size=(28, 28))
+            img_orig_icon = PILImage.merge(
+                "RGBA",
+                (
+                    r.point(lambda _: 140),
+                    g.point(lambda _: 140),
+                    b.point(lambda _: 140),
+                    a,
+                ),
+            )
+            icon_img_orig = ctk.CTkImage(
+                light_image=img_orig_icon, dark_image=img_orig_icon, size=(28, 28)
+            )
 
             placeholder_img_orig = ctk.CTkLabel(
-                ca.original_image, 
+                ca.original_image,
                 image=icon_img_orig,
-                text="\nClique em 'Carregar' para selecionar a imagem", 
+                text="\nClique em 'Carregar' para selecionar a imagem",
                 compound="top",
                 font=("Arial", 13, "italic"),
-                text_color="gray"
+                text_color="gray",
             )
 
             placeholder_img_orig.image = icon_img_orig
@@ -94,17 +102,27 @@ class App(ctk.CTk):
 
             hist_orig_icon = PILImage.open("ui/assets/chart-column.png").convert("RGBA")
             r, g, b, a = hist_orig_icon.split()
-            hist_orig_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
-            
-            icon_hist_orig = ctk.CTkImage(light_image=hist_orig_icon, dark_image=hist_orig_icon, size=(28, 28))
+            hist_orig_icon = PILImage.merge(
+                "RGBA",
+                (
+                    r.point(lambda _: 140),
+                    g.point(lambda _: 140),
+                    b.point(lambda _: 140),
+                    a,
+                ),
+            )
+
+            icon_hist_orig = ctk.CTkImage(
+                light_image=hist_orig_icon, dark_image=hist_orig_icon, size=(28, 28)
+            )
 
             placeholder_hist_orig = ctk.CTkLabel(
-                ca.original_hist, 
+                ca.original_hist,
                 image=icon_hist_orig,
-                text="\nHistograma indisponível", 
+                text="\nHistograma indisponível",
                 compound="top",
                 font=("Arial", 13, "italic"),
-                text_color="gray"
+                text_color="gray",
             )
 
             placeholder_hist_orig.image = icon_hist_orig
@@ -115,27 +133,41 @@ class App(ctk.CTk):
             render_histogram(ca.result_hist, s.result_image)
 
             self.bottom_bar.btn_save.configure(state="normal", fg_color="#1f538d")
-            self.central_area.btn_use_result.configure(state="normal", fg_color="#1f538d")
+            self.central_area.btn_use_result.configure(
+                state="normal", fg_color="#1f538d"
+            )
         else:
             clear_frame(ca.result_image)
             clear_frame(ca.result_hist)
 
             self.bottom_bar.btn_save.configure(state="disabled", fg_color="#525252")
-            self.central_area.btn_use_result.configure(state="disabled", fg_color="#525252")
+            self.central_area.btn_use_result.configure(
+                state="disabled", fg_color="#525252"
+            )
 
             img_res_icon = PILImage.open("ui/assets/image.png").convert("RGBA")
             r, g, b, a = img_res_icon.split()
-            img_res_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
-            
-            icon_img_res = ctk.CTkImage(light_image=img_res_icon, dark_image=img_res_icon, size=(28, 28))
+            img_res_icon = PILImage.merge(
+                "RGBA",
+                (
+                    r.point(lambda _: 140),
+                    g.point(lambda _: 140),
+                    b.point(lambda _: 140),
+                    a,
+                ),
+            )
+
+            icon_img_res = ctk.CTkImage(
+                light_image=img_res_icon, dark_image=img_res_icon, size=(28, 28)
+            )
 
             placeholder_img_res = ctk.CTkLabel(
-                ca.result_image, 
+                ca.result_image,
                 image=icon_img_res,
-                text="\nO resultado aparecerá aqui", 
+                text="\nO resultado aparecerá aqui",
                 compound="top",
                 font=("Arial", 13, "italic"),
-                text_color="gray"
+                text_color="gray",
             )
 
             placeholder_img_res.image = icon_img_res
@@ -143,17 +175,27 @@ class App(ctk.CTk):
 
             hist_res_icon = PILImage.open("ui/assets/chart-column.png").convert("RGBA")
             r, g, b, a = hist_res_icon.split()
-            hist_res_icon = PILImage.merge("RGBA", (r.point(lambda _: 140), g.point(lambda _: 140), b.point(lambda _: 140), a))
-            
-            icon_hist_res = ctk.CTkImage(light_image=hist_res_icon, dark_image=hist_res_icon, size=(28, 28))
+            hist_res_icon = PILImage.merge(
+                "RGBA",
+                (
+                    r.point(lambda _: 140),
+                    g.point(lambda _: 140),
+                    b.point(lambda _: 140),
+                    a,
+                ),
+            )
+
+            icon_hist_res = ctk.CTkImage(
+                light_image=hist_res_icon, dark_image=hist_res_icon, size=(28, 28)
+            )
 
             placeholder_hist_res = ctk.CTkLabel(
-                ca.result_hist, 
+                ca.result_hist,
                 image=icon_hist_res,
-                text="\nHistograma indisponível", 
+                text="\nHistograma indisponível",
                 compound="top",
                 font=("Arial", 13, "italic"),
-                text_color="gray"
+                text_color="gray",
             )
 
             placeholder_hist_res.image = icon_hist_res
@@ -169,23 +211,47 @@ class App(ctk.CTk):
         )
         if not path:
             return
-        
-        _img, arr = load(path)
+
+        try:
+            _img, arr = load(path)
+        except Exception as e:
+            messagebox.showerror(
+                title="Erro ao carregar",
+                message=f"Não foi possível abrir a imagem.\n"
+                f"Verifique se o arquivo é uma imagem válida.\n\n{e}",
+            )
+            return
         self.state_data.original_image = arr
         self.state_data.result_image = None
         self.update_screens()
-        
 
     def _on_apply(self) -> None:
         s = self.state_data
         if s.original_image is None:
+            messagebox.showwarning(
+                title="Nenhuma imagem",
+                message="Carregue uma imagem antes de aplicar uma transformação.",
+            )
             return
         func, _ = REGISTRY.get(s.selected_transform, (None, None))
         if func is None:
-            print(f"Transformação '{s.selected_transform}' não encontrada!")
+            messagebox.showerror(
+                title="Erro",
+                message=f"Transformação '{s.selected_transform}' não encontrada.",
+            )
             return
-        params = self.left_panel.current_panel.get_params()
-        result = func(s.original_image, **params)
+        try:
+            params = self.left_panel.current_panel.get_params()
+            result = func(s.original_image, **params)
+        except ValueError as e:
+            messagebox.showwarning(title="Parâmetro inválido", message=str(e))
+            return
+        except Exception as e:
+            messagebox.showerror(
+                title="Erro ao aplicar",
+                message=f"Falha ao aplicar a transformação.\n\n{e}",
+            )
+            return
         s.result_image = np.asarray(result.image, dtype=np.uint8)
         self.update_screens()
 
@@ -223,10 +289,12 @@ class App(ctk.CTk):
 
         try:
             img_to_save = PILImage.fromarray(s.result_image, mode="L")
-            
+
             img_to_save.save(path)
-            
+
             messagebox.showinfo(title="Sucesso", message="Imagem salva com sucesso!")
-            
+
         except Exception as e:
-            messagebox.showerror(title="Erro", message=f"Não foi possível salvar a imagem:\n{str(e)}")
+            messagebox.showerror(
+                title="Erro", message=f"Não foi possível salvar a imagem:\n{str(e)}"
+            )
