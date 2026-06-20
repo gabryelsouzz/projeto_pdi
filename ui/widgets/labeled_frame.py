@@ -3,7 +3,7 @@ import customtkinter as ctk
 
 class LabeledFrame(ctk.CTkFrame):
 
-    def __init__(self, master, title: str, **kwargs):
+    def __init__(self, master: ctk.CTkBaseClass, title: str, **kwargs) -> None:
         super().__init__(master, **kwargs)
 
         self.grid_columnconfigure(0, weight=1)

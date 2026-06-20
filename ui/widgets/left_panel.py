@@ -1,17 +1,19 @@
 from typing import Callable
-import customtkinter as ctk
-from ui.registry import REGISTRY
-from ui.components.panels import ParamPanel
 
-LEFT_PANEL_WIDTH: int = 260
+import customtkinter as ctk
+
+from config.layout import LEFT_PANEL_WIDTH
+from core.transforms import TRANSFORMS
+from ui.widgets.panels import PANEL_FOR, ParamPanel
+
 
 class LeftPanel(ctk.CTkFrame):
     def __init__(
         self,
-        master,
+        master: ctk.CTkBaseClass,
         on_transform_change: Callable[[str], None] | None = None,
         **kwargs,
-    ):
+    ) -> None:
         super().__init__(master, width=LEFT_PANEL_WIDTH, **kwargs)
         self.grid_propagate(False)
         self.grid_columnconfigure(0, weight=1)
@@ -25,7 +27,7 @@ class LeftPanel(ctk.CTkFrame):
         )
         self.header.grid(row=0, column=0, sticky="ew", padx=12, pady=12)
 
-        names = list(REGISTRY.keys())
+        names = list(TRANSFORMS.keys())
         self.transform_menu = ctk.CTkOptionMenu(
             self, values=names, command=self._on_transform_change
         )
@@ -35,7 +37,7 @@ class LeftPanel(ctk.CTkFrame):
         self.panel_container.grid(row=2, column=0, sticky="new", padx=12, pady=(0, 8))
         self.panel_container.grid_columnconfigure(0, weight=1)
 
-        self.current_panel = None
+        self.current_panel: ParamPanel | None = None
         self._on_transform_change(names[0])
 
         self.grid_rowconfigure(3, weight=1)
@@ -46,7 +48,7 @@ class LeftPanel(ctk.CTkFrame):
         if self.current_panel is not None:
             self.current_panel.destroy()
 
-        _,panel_cls = REGISTRY[name]
+        panel_cls = PANEL_FOR[name]
         self.current_panel = panel_cls(self.panel_container, transform_name=name)
         self.current_panel.grid(row=0, column=0, sticky="ew")
 

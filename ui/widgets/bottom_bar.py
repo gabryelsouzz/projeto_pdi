@@ -1,11 +1,11 @@
 import customtkinter as ctk
 
-BOTTOM_BAR_HEIGHT: int = 32
+from config.layout import BOTTOM_BAR_HEIGHT
 
 
 class BottomBar(ctk.CTkFrame):
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master: ctk.CTkBaseClass, **kwargs) -> None:
         super().__init__(master, height=BOTTOM_BAR_HEIGHT, **kwargs)
 
         self.pack_propagate(False)
@@ -17,8 +17,8 @@ class BottomBar(ctk.CTkFrame):
         self.btn_reset.pack(side="left", pady=2)
 
         self.btn_save: ctk.CTkButton = ctk.CTkButton(
-            self, 
-            text="Salvar", 
+            self,
+            text="Salvar",
             width=120,
         )
         self.btn_save.pack(side="right", padx=12, pady=2)

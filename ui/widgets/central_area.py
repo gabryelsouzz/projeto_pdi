@@ -1,11 +1,11 @@
 import customtkinter as ctk
 
-from ui.components.labeled_frame import LabeledFrame
+from ui.widgets.labeled_frame import LabeledFrame
 
 
 class CentralArea(ctk.CTkFrame):
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master: ctk.CTkBaseClass, **kwargs) -> None:
         super().__init__(master, **kwargs)
 
         # Rows 0 and 2 are the frames (expand); row 1 is the divider (fixed);
