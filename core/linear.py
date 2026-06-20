@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from numpy.typing import NDArray
-from numpy import uint8, float64
+from numpy import uint8, float64, int64
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from PIL.Image import Image as IMG
@@ -20,7 +20,7 @@ def linear_transformation(vector_image: NDArray[uint8], c: float64, b: float64) 
 
     result  = np.clip(c * vector_image.astype(np.float64) + b, 0, 255).astype(uint8)
     pdf = compute_pdf(result)
-    hist: NDArray[uint8] = np.bincount(result.ravel(), minlength=256).astype(uint8)
+    hist: NDArray[int64] = np.bincount(result.ravel(), minlength=256).astype(int64)
 
     fig: Figure
     ax:  Axes

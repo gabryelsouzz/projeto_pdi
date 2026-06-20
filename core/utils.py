@@ -7,8 +7,9 @@ from numpy.typing import NDArray
 
 
 def load(path: str) -> tuple[IMG, NDArray[uint8]]:
-    img: IMG = Image.open(path).convert("L")  # escala de cinza de 8 bits
-    arr: NDArray[uint8] = np.array(img, dtype=uint8)
+    with Image.open(path) as _img:
+        img: IMG = _img.convert("L")
+        arr: NDArray[uint8] = np.array(img, dtype=uint8)
     return img, arr
 
 

@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from PIL.Image import Image as IMG
 from numpy.typing import NDArray
-from numpy import uint8
+from numpy import uint8, int64
 from matplotlib.figure import Figure
 
 from core.types import ProcessingResult
@@ -19,7 +19,7 @@ def equalize(arr: NDArray[uint8]) -> ProcessingResult:
     arr_equalized: NDArray[uint8] = lut_equalized[arr]
     img_equalized: IMG = Image.fromarray(arr_equalized, mode='L')
 
-    hist_equalized: NDArray[uint8] = np.bincount(arr_equalized.ravel(), minlength=256).astype(uint8)
+    hist_equalized: NDArray[int64] = np.bincount(arr_equalized.ravel(), minlength=256).astype(int64)
 
     fig: Figure = Figure(figsize=(10, 4))
     ax = fig.add_subplot(1, 1, 1)

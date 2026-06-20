@@ -1,7 +1,7 @@
 from typing import NamedTuple
 from PIL.Image import Image as IMG
 from numpy.typing import NDArray
-from numpy import uint8
+from numpy import uint8, int64
 from matplotlib.figure import Figure
 
 class ProcessingResult(NamedTuple):
@@ -23,5 +23,5 @@ class ProcessingResult(NamedTuple):
     """
     process_name: str
     image: IMG
-    histogram: NDArray[uint8]
+    histogram: NDArray[uint8] | NDArray[int64]
     figure: Figure
