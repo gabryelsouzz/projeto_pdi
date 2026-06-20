@@ -13,7 +13,7 @@ TransformFn = Callable[..., ProcessingResult]
 TRANSFORMS: dict[str, TransformFn] = {
     "Limiarização": threshold,
     "Transformação Linear": linear_transformation,
-    "Alargamento de Contraste": autoscale,
+    "Autoescala": autoscale,
     "Equalização": equalize,
     "Casamento de Histograma": match,
 }
