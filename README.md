@@ -4,7 +4,7 @@
 
 # 2.Use pyenv to create a venv in .venv
 
-`yenv exec python -m venv .venv`
+`pyenv exec python -m venv .venv`
 
 # 3.Activate venv
 

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from numpy.typing import NDArray
-from numpy import uint8, float64
+from numpy import uint8, float64, int64
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from PIL.Image import Image as IMG
@@ -19,7 +19,7 @@ def threshold(vector_image: NDArray[uint8], T: int = 128) -> ProcessingResult:
 
     result = np.where(vector_image >= T, 255, 0).astype(uint8)
     pdf = compute_pdf(result)
-    hist: NDArray[uint8] = np.bincount(result.ravel(), minlength=256).astype(uint8)
+    hist: NDArray[int64] = np.bincount(result.ravel(), minlength=256).astype(int64)
 
     fig: Figure
     ax:  Axes
