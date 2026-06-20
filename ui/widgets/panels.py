@@ -239,7 +239,7 @@ class EmptyPanel(ParamPanel):
 PANEL_FOR: dict[str, type[ParamPanel]] = {
     "Limiarização": ThresholdPanel,
     "Transformação Linear": LinearPanel,
-    "Alargamento de Contraste": MockPanel,
+    "Alargamento de Contraste": EmptyPanel,
     "Equalização": EmptyPanel,
     "Casamento de Histograma": MatchPanel,
 }
