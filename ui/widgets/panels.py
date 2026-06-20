@@ -19,6 +19,7 @@ from config.params import (
 )
 from core.utils import load
 from ui.icons import load_icon
+from ui.render import fit_photoimage
 
 
 class ParamPanel(ctk.CTkFrame):
@@ -57,22 +58,43 @@ class ThresholdPanel(ParamPanel):
         frame = ctk.CTkFrame(self, fg_color="transparent")
         frame.pack(fill="x", padx=15, pady=15)
 
-        label = ctk.CTkLabel(frame, text="Limiar (T):", font=("Arial", 13))
+        header = ctk.CTkFrame(frame, fg_color="transparent")
+        header.pack(fill="x")
+
+        label = ctk.CTkLabel(header, text="Limiar (T):", font=("Arial", 13))
         label.pack(side="left", padx=5)
 
+        self.value_label = ctk.CTkLabel(
+            header, text=str(THRESHOLD_DEFAULT), font=("Arial", 13, "bold")
+        )
+        self.value_label.pack(side="right", padx=5)
+
+        slider_row = ctk.CTkFrame(frame, fg_color="transparent")
+        slider_row.pack(fill="x", pady=(6, 0))
+
+        min_label = ctk.CTkLabel(
+            slider_row,
+            text=str(THRESHOLD_RANGE[0]),
+            font=("Arial", 11),
+            text_color="gray60",
+        )
+        min_label.pack(side="left", padx=(5, 0))
+
+        max_label = ctk.CTkLabel(
+            slider_row,
+            text=str(THRESHOLD_RANGE[1]),
+            font=("Arial", 11),
+            text_color="gray60",
+        )
+        max_label.pack(side="right", padx=(0, 5))
+
         self.slider = ctk.CTkSlider(
-            frame,
+            slider_row,
             from_=THRESHOLD_RANGE[0],
             to=THRESHOLD_RANGE[1],
             variable=self.threshold_value,
-            width=180,
         )
-        self.slider.pack(side="left", padx=10)
-
-        self.value_label = ctk.CTkLabel(
-            frame, text=str(THRESHOLD_DEFAULT), font=("Arial", 13, "bold")
-        )
-        self.value_label.pack(side="left", padx=5)
+        self.slider.pack(side="left", fill="x", expand=True, padx=8)
 
         self.slider.configure(command=self._update_label)
 
@@ -95,39 +117,77 @@ class LinearPanel(ParamPanel):
         frame_c = ctk.CTkFrame(self, fg_color="transparent")
         frame_c.pack(fill="x", padx=15, pady=5)
 
-        label_c = ctk.CTkLabel(frame_c, text="Fator C (contraste):", font=("Arial", 12))
+        header_c = ctk.CTkFrame(frame_c, fg_color="transparent")
+        header_c.pack(fill="x")
+
+        label_c = ctk.CTkLabel(
+            header_c, text="Fator C (contraste):", font=("Arial", 12)
+        )
         label_c.pack(side="left", padx=5)
 
+        self.c_label = ctk.CTkLabel(header_c, text="1.0", font=("Arial", 12, "bold"))
+        self.c_label.pack(side="right", padx=5)
+
+        slider_row_c = ctk.CTkFrame(frame_c, fg_color="transparent")
+        slider_row_c.pack(fill="x", pady=(6, 0))
+
+        c_min_label = ctk.CTkLabel(
+            slider_row_c,
+            text=f"{C_RANGE[0]:.1f}",
+            font=("Arial", 11),
+            text_color="gray60",
+        )
+        c_min_label.pack(side="left", padx=(5, 0))
+
+        c_max_label = ctk.CTkLabel(
+            slider_row_c,
+            text=f"{C_RANGE[1]:.1f}",
+            font=("Arial", 11),
+            text_color="gray60",
+        )
+        c_max_label.pack(side="right", padx=(0, 5))
+
         slider_c = ctk.CTkSlider(
-            frame_c,
+            slider_row_c,
             from_=C_RANGE[0],
             to=C_RANGE[1],
             variable=self.c_value,
-            width=150,
         )
-        slider_c.pack(side="left", padx=10)
-
-        self.c_label = ctk.CTkLabel(frame_c, text="1.0", font=("Arial", 12, "bold"))
-        self.c_label.pack(side="left", padx=5)
+        slider_c.pack(side="left", fill="x", expand=True, padx=8)
         slider_c.configure(command=self._update_c_label)
 
         frame_b = ctk.CTkFrame(self, fg_color="transparent")
         frame_b.pack(fill="x", padx=15, pady=5)
 
-        label_b = ctk.CTkLabel(frame_b, text="Fator B (brilho):", font=("Arial", 12))
+        header_b = ctk.CTkFrame(frame_b, fg_color="transparent")
+        header_b.pack(fill="x")
+
+        label_b = ctk.CTkLabel(header_b, text="Fator B (brilho):", font=("Arial", 12))
         label_b.pack(side="left", padx=5)
 
+        self.b_label = ctk.CTkLabel(header_b, text="0", font=("Arial", 12, "bold"))
+        self.b_label.pack(side="right", padx=5)
+
+        slider_row_b = ctk.CTkFrame(frame_b, fg_color="transparent")
+        slider_row_b.pack(fill="x", pady=(6, 0))
+
+        b_min_label = ctk.CTkLabel(
+            slider_row_b, text=str(B_RANGE[0]), font=("Arial", 11), text_color="gray60"
+        )
+        b_min_label.pack(side="left", padx=(5, 0))
+
+        b_max_label = ctk.CTkLabel(
+            slider_row_b, text=str(B_RANGE[1]), font=("Arial", 11), text_color="gray60"
+        )
+        b_max_label.pack(side="right", padx=(0, 5))
+
         slider_b = ctk.CTkSlider(
-            frame_b,
+            slider_row_b,
             from_=B_RANGE[0],
             to=B_RANGE[1],
             variable=self.b_value,
-            width=150,
         )
-        slider_b.pack(side="left", padx=10)
-
-        self.b_label = ctk.CTkLabel(frame_b, text="0", font=("Arial", 12, "bold"))
-        self.b_label.pack(side="left", padx=5)
+        slider_b.pack(side="left", fill="x", expand=True, padx=8)
         slider_b.configure(command=self._update_b_label)
 
     def _update_c_label(self, value: float) -> None:
@@ -167,7 +227,7 @@ class MatchPanel(ParamPanel):
             text="Nenhum arquivo selecionado",
             font=("Arial", 12, "italic"),
         )
-        self.file_label.pack(pady=5)
+        self.file_label.pack(fill="x", pady=5)
 
         self._check_icon = load_icon(ICON_CHECK)
         self._error_icon = load_icon(ICON_ERROR)
@@ -179,9 +239,8 @@ class MatchPanel(ParamPanel):
             image=self._folder_icon,
             compound="left",
             command=self._select_file,
-            width=180,
         )
-        btn_select.pack(pady=10)
+        btn_select.pack(fill="x", pady=10)
 
     def _select_file(self) -> None:
         path = filedialog.askopenfilename(
@@ -194,13 +253,13 @@ class MatchPanel(ParamPanel):
                 _img, self.reference_array = load(path)
                 self.reference_path = path
 
-                name = path.split("/")[-1]
+                thumb = fit_photoimage(self.reference_array, 160, 120)
                 self.file_label.configure(
-                    text=name,
-                    image=self._check_icon,
-                    compound="left",
-                    text_color="green",
+                    text="",
+                    image=thumb,
+                    compound="top",
                 )
+                self.file_label.image = thumb
 
             except Exception as e:
                 self.file_label.configure(
@@ -209,6 +268,7 @@ class MatchPanel(ParamPanel):
                     compound="left",
                     text_color="red",
                 )
+                self.file_label.image = None
                 self.reference_array = None
 
     def get_params(self) -> dict[str, Any]:
