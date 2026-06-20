@@ -3,6 +3,12 @@ from typing import Any
 
 import customtkinter as ctk
 
+from config.assets import (
+    ICON_CHECK,
+    ICON_ERROR,
+    ICON_FOLDER,
+    ICON_IMAGE,
+)
 from config.params import (
     B_DEFAULT,
     B_RANGE,
@@ -12,6 +18,7 @@ from config.params import (
     THRESHOLD_RANGE,
 )
 from core.utils import load
+from ui.icons import load_icon
 
 
 class ParamPanel(ctk.CTkFrame):
@@ -145,9 +152,12 @@ class MatchPanel(ParamPanel):
         frame = ctk.CTkFrame(self, fg_color="transparent")
         frame.pack(fill="x", padx=15, pady=15)
 
+        self._image_icon = load_icon(ICON_IMAGE)
         label = ctk.CTkLabel(
             frame,
-            text="📸 Imagem de Referência:",
+            text="Imagem de Referência:",
+            image=self._image_icon,
+            compound="left",
             font=("Arial", 13),
         )
         label.pack(pady=(5, 5))
@@ -159,9 +169,15 @@ class MatchPanel(ParamPanel):
         )
         self.file_label.pack(pady=5)
 
+        self._check_icon = load_icon(ICON_CHECK)
+        self._error_icon = load_icon(ICON_ERROR)
+
+        self._folder_icon = load_icon(ICON_FOLDER, white=True)
         btn_select = ctk.CTkButton(
             frame,
-            text="📁 Selecionar imagem",
+            text="Selecionar imagem",
+            image=self._folder_icon,
+            compound="left",
             command=self._select_file,
             width=180,
         )
@@ -179,10 +195,20 @@ class MatchPanel(ParamPanel):
                 self.reference_path = path
 
                 name = path.split("/")[-1]
-                self.file_label.configure(text=f"✅ {name}", text_color="green")
+                self.file_label.configure(
+                    text=name,
+                    image=self._check_icon,
+                    compound="left",
+                    text_color="green",
+                )
 
             except Exception as e:
-                self.file_label.configure(text=f"❌ Erro: {e}", text_color="red")
+                self.file_label.configure(
+                    text=f"Erro: {e}",
+                    image=self._error_icon,
+                    compound="left",
+                    text_color="red",
+                )
                 self.reference_array = None
 
     def get_params(self) -> dict[str, Any]:
@@ -199,7 +225,7 @@ class EmptyPanel(ParamPanel):
 
         label = ctk.CTkLabel(
             self,
-            text="✨ Nenhum parâmetro necessário",
+            text="Nenhum parâmetro necessário",
             font=("Arial", 14, "italic"),
         )
         label.pack(pady=30, padx=20)

@@ -1,5 +1,7 @@
 import customtkinter as ctk
 
+from config.assets import ICON_ARROW_BACK
+from ui.icons import load_icon
 from ui.widgets.labeled_frame import LabeledFrame
 
 
@@ -31,9 +33,18 @@ class CentralArea(ctk.CTkFrame):
         result_hist_frame = LabeledFrame(self, title="Histograma Resultante")
         result_hist_frame.grid(row=2, column=1, sticky="nsew", padx=4, pady=4)
 
+        # Keep references so the CTkImage objects are not garbage-collected.
+        # White while enabled, gray once disabled.
+        self._arrow_back_icon = load_icon(ICON_ARROW_BACK, white=True)
+        self._arrow_back_icon_disabled = load_icon(ICON_ARROW_BACK)
         self.btn_use_result: ctk.CTkButton = ctk.CTkButton(
-            self, text="Usar resultado como entrada"
+            self,
+            text="Usar resultado como entrada",
+            image=self._arrow_back_icon,
+            compound="left",
         )
+        self.btn_use_result.icon_enabled = self._arrow_back_icon
+        self.btn_use_result.icon_disabled = self._arrow_back_icon_disabled
         self.btn_use_result.grid(row=3, column=0, sticky="ew", padx=4, pady=(0, 4))
 
         self.original_image: ctk.CTkFrame = original_image_frame.content

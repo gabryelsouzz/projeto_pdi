@@ -13,3 +13,6 @@ PLACEHOLDER_TEXT_COLOR: str = "gray"
 # Light gray for dark backgrounds, darker gray for light backgrounds.
 LIGHT_TINT: tuple[int, int, int] = (110, 110, 110)
 DARK_TINT: tuple[int, int, int] = (160, 160, 160)
+
+# Tint for icons placed on colored buttons (white reads well over ACCENT).
+WHITE_TINT: tuple[int, int, int] = (255, 255, 255)

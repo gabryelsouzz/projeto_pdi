@@ -2,8 +2,10 @@ from typing import Callable
 
 import customtkinter as ctk
 
+from config.assets import ICON_PLAY
 from config.layout import LEFT_PANEL_WIDTH
 from core.transforms import TRANSFORMS
+from ui.icons import load_icon
 from ui.widgets.panels import PANEL_FOR, ParamPanel
 
 
@@ -41,7 +43,15 @@ class LeftPanel(ctk.CTkFrame):
         self._on_transform_change(names[0])
 
         self.grid_rowconfigure(3, weight=1)
-        self.btn_apply = ctk.CTkButton(self, text="Aplicar")
+        # Keep references so the CTkImage objects are not garbage-collected.
+        # White while enabled, gray once disabled.
+        self._play_icon = load_icon(ICON_PLAY, white=True)
+        self._play_icon_disabled = load_icon(ICON_PLAY)
+        self.btn_apply = ctk.CTkButton(
+            self, text="Aplicar", image=self._play_icon, compound="left"
+        )
+        self.btn_apply.icon_enabled = self._play_icon
+        self.btn_apply.icon_disabled = self._play_icon_disabled
         self.btn_apply.grid(row=4, column=0, sticky="ew", padx=12, pady=12)
 
     def _on_transform_change(self, name: str) -> None:

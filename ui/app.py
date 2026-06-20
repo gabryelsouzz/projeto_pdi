@@ -2,10 +2,9 @@ import customtkinter as ctk
 
 from config.assets import ICON_CHART, ICON_IMAGE, ICON_UPLOAD
 from config.layout import MIN_SIZE, WINDOW_GEOMETRY, WINDOW_TITLE
-from config.theme import ACCENT, DISABLED
 from ui.state import AppState
 from ui.render import render_image, render_histogram
-from ui.ui_utils import clear_frame
+from ui.ui_utils import clear_frame, set_button_enabled
 from ui.widgets.placeholders import show_placeholder
 from ui.widgets.left_panel import LeftPanel
 from ui.widgets.central_area import CentralArea
@@ -76,12 +75,12 @@ class App(ctk.CTk):
             render_image(ca.original_image, s.original_image)
             render_histogram(ca.original_hist, s.original_image)
 
-            self.left_panel.btn_apply.configure(state="normal", fg_color=ACCENT)
+            set_button_enabled(self.left_panel.btn_apply, True)
         else:
             clear_frame(ca.original_image)
             clear_frame(ca.original_hist)
 
-            self.left_panel.btn_apply.configure(state="disabled", fg_color=DISABLED)
+            set_button_enabled(self.left_panel.btn_apply, False)
 
             show_placeholder(
                 ca.original_image,
@@ -94,16 +93,14 @@ class App(ctk.CTk):
             render_image(ca.result_image, s.result_image)
             render_histogram(ca.result_hist, s.result_image)
 
-            self.bottom_bar.btn_save.configure(state="normal", fg_color=ACCENT)
-            self.central_area.btn_use_result.configure(state="normal", fg_color=ACCENT)
+            set_button_enabled(self.bottom_bar.btn_save, True)
+            set_button_enabled(self.central_area.btn_use_result, True)
         else:
             clear_frame(ca.result_image)
             clear_frame(ca.result_hist)
 
-            self.bottom_bar.btn_save.configure(state="disabled", fg_color=DISABLED)
-            self.central_area.btn_use_result.configure(
-                state="disabled", fg_color=DISABLED
-            )
+            set_button_enabled(self.bottom_bar.btn_save, False)
+            set_button_enabled(self.central_area.btn_use_result, False)
 
             show_placeholder(
                 ca.result_image, ICON_IMAGE, "\nO resultado aparecerá aqui"
