@@ -7,7 +7,7 @@ MIN_SIZE: tuple[int, int] = (900, 600)
 
 # Layout dimensions
 LEFT_PANEL_WIDTH: int = 260
-BOTTOM_BAR_HEIGHT: int = 32
+BUTTON_HEIGHT: int = 28
 
 # Rendering
 # Size used when a frame has not been sized by the layout yet.

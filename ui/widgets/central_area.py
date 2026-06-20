@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from config.assets import ICON_ARROW_BACK
+from config.layout import BUTTON_HEIGHT
 from ui.icons import load_icon
 from ui.widgets.labeled_frame import LabeledFrame
 
@@ -42,6 +43,7 @@ class CentralArea(ctk.CTkFrame):
             text="Usar resultado como entrada",
             image=self._arrow_back_icon,
             compound="left",
+            height=BUTTON_HEIGHT,
         )
         self.btn_use_result.icon_enabled = self._arrow_back_icon
         self.btn_use_result.icon_disabled = self._arrow_back_icon_disabled
